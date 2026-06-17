@@ -1,8 +1,8 @@
-﻿#include "GoodreadsSystem.h"
+﻿#include "App.h"
 
 int main()
 {
-    GoodreadsSystem system;
+    App system;
     system.run();
 
     return 0;
