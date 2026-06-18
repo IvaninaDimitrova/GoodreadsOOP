@@ -85,9 +85,9 @@ Date Date::fromString(const std::string& text)
 
     input >> day >> firstSeparator >> month >> secondSeparator >> year;
 
-    if (!input || firstSeparator != '/' || secondSeparator != '/')
+    if (!input || firstSeparator != '/' || secondSeparator != '/' || !input.eof())
     {
-        return Date();
+        return Date(0, 0, 0);
     }
 
     return Date(day, month, year);
