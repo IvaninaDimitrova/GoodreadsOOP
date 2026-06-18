@@ -558,6 +558,32 @@ bool Database::loadFromFiles()
         booksFile.close();
     }
 
+    for (const Book& book : books)
+    {
+        Author* author = findAuthor(book.getAuthorUsername());
+        Publisher* publisher = findPublisher(book.getPublisherUsername());
+
+        if (author != nullptr)
+        {
+            author->addPublishedBook(book.getTitle());
+
+            if (publisher != nullptr)
+            {
+                author->addPublisher(publisher->getUsername());
+            }
+        }
+
+        if (publisher != nullptr)
+        {
+            publisher->addPublishedBook(book.getTitle());
+
+            if (author != nullptr)
+            {
+                publisher->addAuthor(author->getUsername());
+            }
+        }
+    }
+
     std::ifstream readerBooksFile("reader_books.txt");
 
     if (readerBooksFile.is_open())
