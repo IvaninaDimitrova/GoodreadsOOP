@@ -127,6 +127,7 @@
     <ClCompile Include="Book.cpp" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="Date.cpp" />
+    <ClCompile Include="FuzzySearch.cpp" />
     <ClCompile Include="Goodreads.cpp" />
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Message.cpp" />
@@ -142,6 +143,7 @@
     <ClInclude Include="Book.h" />
     <ClInclude Include="Database.h" />
     <ClInclude Include="Date.h" />
+    <ClInclude Include="FuzzySearch.h" />
     <ClInclude Include="Message.h" />
     <ClInclude Include="Publisher.h" />
     <ClInclude Include="Reader.h" />

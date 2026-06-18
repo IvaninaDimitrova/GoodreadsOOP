@@ -46,6 +46,7 @@ private:
 
     std::string toLowercase(const std::string& text) const;
     bool containsIgnoreCase(const std::string& text, const std::string& searchedText) const;
+    bool wordsMatchFuzzy(const std::string& text, const std::string& searchedText) const;
     bool bookMatchesSearch(const Book& book, const std::string& searchedText) const;
 
 public:

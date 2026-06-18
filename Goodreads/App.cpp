@@ -1,6 +1,7 @@
 #include "App.h"
 #include "Utils.h"
 #include "Message.h"
+#include "FuzzySearch.h"
 
 #include <cctype>
 #include <iostream>
@@ -403,26 +404,70 @@ bool App::containsIgnoreCase(const std::string& text, const std::string& searche
     return loweredText.find(loweredSearchedText) != std::string::npos;
 }
 
+bool App::wordsMatchFuzzy(const std::string& text, const std::string& searchedText) const
+{
+    if (FuzzySearch::areSimilar(text, searchedText))
+    {
+        return true;
+    }
+
+    std::string currentWord;
+
+    for (char symbol : text)
+    {
+        if (symbol == ' ' || symbol == '-' || symbol == '_' || symbol == ',' || symbol == '.')
+        {
+            if (!currentWord.empty())
+            {
+                if (FuzzySearch::areSimilar(currentWord, searchedText))
+                {
+                    return true;
+                }
+
+                currentWord.clear();
+            }
+        }
+        else
+        {
+            currentWord += symbol;
+        }
+    }
+
+    if (!currentWord.empty())
+    {
+        if (FuzzySearch::areSimilar(currentWord, searchedText))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 bool App::bookMatchesSearch(const Book& book, const std::string& searchedText) const
 {
-    if (containsIgnoreCase(book.getTitle(), searchedText))
+    if (containsIgnoreCase(book.getTitle(), searchedText) ||
+        wordsMatchFuzzy(book.getTitle(), searchedText))
     {
         return true;
     }
 
-    if (containsIgnoreCase(book.getAuthorUsername(), searchedText))
+    if (containsIgnoreCase(book.getAuthorUsername(), searchedText) ||
+        wordsMatchFuzzy(book.getAuthorUsername(), searchedText))
     {
         return true;
     }
 
-    if (containsIgnoreCase(book.getPublisherUsername(), searchedText))
+    if (containsIgnoreCase(book.getPublisherUsername(), searchedText) ||
+        wordsMatchFuzzy(book.getPublisherUsername(), searchedText))
     {
         return true;
     }
 
     for (const std::string& genre : book.getGenres())
     {
-        if (containsIgnoreCase(genre, searchedText))
+        if (containsIgnoreCase(genre, searchedText) ||
+            wordsMatchFuzzy(genre, searchedText))
         {
             return true;
         }
