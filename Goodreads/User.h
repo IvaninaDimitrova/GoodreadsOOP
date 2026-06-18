@@ -27,6 +27,7 @@ public:
     User(const std::string& username, const std::string& password, const Date& registrationDate);
 
     const std::string& getUsername() const;
+    const std::string& getPasswordForSaving() const;
     const Date& getRegistrationDate() const;
 
     bool checkPassword(const std::string& password) const;

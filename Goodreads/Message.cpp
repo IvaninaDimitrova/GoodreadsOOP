@@ -63,3 +63,28 @@ std::string Message::getTypeName() const
         return "unknown";
     }
 }
+
+MessageType Message::typeFromString(const std::string& text)
+{
+    if (text == "general")
+    {
+        return MessageType::General;
+    }
+
+    if (text == "follow notification")
+    {
+        return MessageType::FollowNotification;
+    }
+
+    if (text == "job offer")
+    {
+        return MessageType::JobOffer;
+    }
+
+    if (text == "book notification")
+    {
+        return MessageType::BookNotification;
+    }
+
+    return MessageType::General;
+}

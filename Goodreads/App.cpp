@@ -11,6 +11,7 @@
 App::App()
     : database(), currentUser(nullptr)
 {
+    database.loadFromFiles();
 }
 
 void App::run()
@@ -26,6 +27,7 @@ void App::run()
 
         if (line == "exit")
         {
+            database.saveToFiles();
             std::cout << "Exiting Goodreads.\n";
             break;
         }
@@ -133,6 +135,14 @@ void App::executeCommand(const std::string& line)
     {
         handleDeleteMessage(args);
     }
+    else if (command == "set-birthday")
+    {
+        handleSetBirthday(args);
+    }
+    else if (command == "clear-birthday")
+    {
+        handleClearBirthday();
+    }
     else
     {
         std::cout << "Unknown command: " << command << "\n";
@@ -142,34 +152,54 @@ void App::executeCommand(const std::string& line)
 void App::printHelp() const
 {
     std::cout << "Available commands:\n";
+
+    std::cout << "\nAccount:\n";
     std::cout << "help\n";
     std::cout << "register <username> <password> <role>\n";
     std::cout << "login <username> <password>\n";
     std::cout << "logout\n";
     std::cout << "whoami\n";
+    std::cout << "exit\n";
+
+    std::cout << "\nBooks:\n";
     std::cout << "publish <title> <authorUsername> <releaseDate> <pageCount> <genre1> [genre2] ...\n";
     std::cout << "search [text]\n";
     std::cout << "book-info <title>\n";
     std::cout << "add-book <title> <status> [rating]\n";
     std::cout << "my-books\n";
     std::cout << "delete-book <title>\n";
+
+    std::cout << "\nShelves:\n";
     std::cout << "create-shelf <name>\n";
     std::cout << "delete-shelf <name>\n";
     std::cout << "show-shelves\n";
     std::cout << "add-to-shelf <bookTitle> <shelfName>\n";
     std::cout << "remove-from-shelf <bookTitle> <shelfName>\n";
     std::cout << "shelf-info <shelfName>\n";
+
+    std::cout << "\nSocial:\n";
     std::cout << "follow <username>\n";
     std::cout << "profile <username>\n";
+
+    std::cout << "\nMessages:\n";
     std::cout << "inbox\n";
     std::cout << "read-message <index>\n";
     std::cout << "delete-message <index>\n";
-    std::cout << "exit\n";
+
+    std::cout << "\nProfile settings:\n";
+    std::cout << "set-birthday <dd/mm/yyyy>\n";
+    std::cout << "clear-birthday\n";
 
     std::cout << "\nRegistration rules:\n";
     std::cout << "username: 6-24 characters\n";
     std::cout << "password: 12-36 characters, at least one lowercase letter, one uppercase letter, and one non-letter character\n";
     std::cout << "role: reader, author, or publisher\n";
+
+    std::cout << "\nBook status values:\n";
+    std::cout << "plan-to-read, reading, paused, dropped\n";
+
+    std::cout << "\nNotes:\n";
+    std::cout << "Use quotes for titles or shelf names with spaces, for example: \"Dune Messiah\".\n";
 }
 
 void App::handleRegister(const std::vector<std::string>& args)
@@ -1316,4 +1346,60 @@ void App::handleDeleteMessage(const std::vector<std::string>& args)
     }
 
     std::cout << "This user type does not have an inbox.\n";
+}
+
+void App::handleSetBirthday(const std::vector<std::string>& args)
+{
+    if (args.size() != 2)
+    {
+        std::cout << "Usage: set-birthday <dd/mm/yyyy>\n";
+        return;
+    }
+
+    if (currentUser == nullptr)
+    {
+        std::cout << "You must be logged in to set your birthday.\n";
+        return;
+    }
+
+    Reader* reader = dynamic_cast<Reader*>(currentUser);
+
+    if (reader == nullptr)
+    {
+        std::cout << "Only readers and authors can set a birthday.\n";
+        return;
+    }
+
+    Date birthday = Date::fromString(args[1]);
+
+    if (!birthday.isValid())
+    {
+        std::cout << "Invalid birthday. Use format dd/mm/yyyy.\n";
+        return;
+    }
+
+    reader->setBirthday(birthday);
+
+    std::cout << "Birthday set successfully.\n";
+}
+
+void App::handleClearBirthday()
+{
+    if (currentUser == nullptr)
+    {
+        std::cout << "You must be logged in to clear your birthday.\n";
+        return;
+    }
+
+    Reader* reader = dynamic_cast<Reader*>(currentUser);
+
+    if (reader == nullptr)
+    {
+        std::cout << "Only readers and authors can clear a birthday.\n";
+        return;
+    }
+
+    reader->clearBirthday();
+
+    std::cout << "Birthday cleared successfully.\n";
 }

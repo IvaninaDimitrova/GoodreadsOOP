@@ -39,4 +39,7 @@ public:
 
     int getUserCount() const;
     int getBookCount() const;
+
+    bool saveToFiles() const;
+    bool loadFromFiles();
 };

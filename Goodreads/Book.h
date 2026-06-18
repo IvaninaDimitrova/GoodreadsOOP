@@ -38,8 +38,10 @@ public:
     int getPageCount() const;
     int getRatingCount() const;
     double getAverageRating() const;
+    double getTotalRating() const;
 
     void setSynopsis(const std::string& synopsis);
+    void setRatingData(double totalRating, int ratingCount);
     bool addRating(double rating);
 
     void printShort() const;

@@ -18,6 +18,11 @@ const std::string& User::getUsername() const
     return username;
 }
 
+const std::string& User::getPasswordForSaving() const
+{
+    return password;
+}
+
 const Date& User::getRegistrationDate() const
 {
     return registrationDate;

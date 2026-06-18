@@ -40,6 +40,9 @@ private:
     void handleReadMessage(const std::vector<std::string>& args);
     void handleDeleteMessage(const std::vector<std::string>& args);
 
+    void handleSetBirthday(const std::vector<std::string>& args);
+    void handleClearBirthday();
+
     bool isPositiveInteger(const std::string& text) const;
     bool tryParseRating(const std::string& text, double& rating) const;
     bool tryParseIndex(const std::string& text, size_t& index) const;

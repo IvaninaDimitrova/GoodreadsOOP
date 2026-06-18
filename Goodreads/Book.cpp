@@ -84,6 +84,22 @@ double Book::getAverageRating() const
     return totalRating / ratingCount;
 }
 
+double Book::getTotalRating() const
+{
+    return totalRating;
+}
+
+void Book::setRatingData(double totalRating, int ratingCount)
+{
+    if (totalRating < 0.0 || ratingCount < 0)
+    {
+        return;
+    }
+
+    this->totalRating = totalRating;
+    this->ratingCount = ratingCount;
+}
+
 void Book::setSynopsis(const std::string& synopsis)
 {
     this->synopsis = synopsis;

@@ -32,4 +32,6 @@ public:
     void markAsRead();
 
     std::string getTypeName() const;
+
+    static MessageType typeFromString(const std::string& text);
 };
